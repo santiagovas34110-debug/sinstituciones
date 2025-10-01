@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Profesor;
+use App\Models\Grupo;
 
 
 class Estudiantes extends Model
@@ -25,7 +26,7 @@ class Estudiantes extends Model
         "email_responsable",
         "parentesco_responsable",
         "direccion",
-        "grado",
+        "id_grado",
         "seccion",
         "fecha_inscripcion",
         "activo"
@@ -33,5 +34,9 @@ class Estudiantes extends Model
     public function profesor()
     {
     return $this->belongsTo(Profesor::class, 'id_profesor');
+    }
+
+    public function grupo(){
+        return $this->benlongsTo(Grupo::class, 'id_grado');
     }
 }
