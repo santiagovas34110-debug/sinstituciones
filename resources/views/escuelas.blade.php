@@ -20,7 +20,7 @@
                         <th>Documento del contacto </th>
                         <th>TLF. del contacto </th>
                         <th>E-Mail del contacto </th>
-                        <th>codigo_dane </th>
+                        <th>Codigo DANE </th>
                         <th>NIT </th>
                         <th>Acciones</th>
                     <tr>

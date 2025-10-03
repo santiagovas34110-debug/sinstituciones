@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('contacto_email');
             $table->string('contacto_documento');
             $table->string('contacto_tipo_documento');
+            $table->string('codigo_dane')->nullable();
+            $table->string('nit')->nullable();
             $table->timestamps();
         });
     }

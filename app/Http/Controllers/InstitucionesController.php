@@ -25,6 +25,8 @@ class InstitucionesController extends Controller
         $contacto_email= $request->contacto_email;
         $contacto_documento= $request->contacto_documento;
         $contacto_tipo_documento= $request->contacto_tipo_documento;
+        $codigo_dane= $request->codigo_dane;
+        $nit= $request->nit;    
 
         Escuelas::create([
             "nombre"=>$nombre,
@@ -34,7 +36,9 @@ class InstitucionesController extends Controller
             "contacto_telefono"=>$contacto_telefono,
             "contacto_email"=>$contacto_email,
             "contacto_documento"=>$contacto_documento,
-            "contacto_tipo_documento"=>$contacto_tipo_documento
+            "contacto_tipo_documento"=>$contacto_tipo_documento,
+            "codigo_dane"=>$codigo_dane,
+            "nit"=>$nit
         ]);
 
         return back()->with('success','Se ha creado la escuela satisfactriamente');
@@ -61,6 +65,8 @@ class InstitucionesController extends Controller
         $contacto_email= $request->contacto_email;
         $contacto_documento= $request->contacto_documento;
         $contacto_tipo_documento= $request->contacto_tipo_documento;
+        $codigo_dane= $request->codigo_dane;
+        $nit= $request->nit;    
 
         Escuelas::where('id',$id)->update([
             "nombre"=>$nombre,
@@ -70,7 +76,9 @@ class InstitucionesController extends Controller
             "contacto_telefono"=>$contacto_telefono,
             "contacto_email"=>$contacto_email,
             "contacto_documento"=>$contacto_documento,
-            "contacto_tipo_documento"=>$contacto_tipo_documento
+            "contacto_tipo_documento"=>$contacto_tipo_documento,
+            "codigo_dane"=>$codigo_dane,
+            "nit"=>$nit
         ]);
 
         return back()->with('success',' Escuela actualizada satisfactriamente');
