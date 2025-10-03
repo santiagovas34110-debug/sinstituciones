@@ -20,6 +20,9 @@
                         <th>Documento del contacto </th>
                         <th>TLF. del contacto </th>
                         <th>E-Mail del contacto </th>
+                        <th>codigo_dane </th>
+                        <th>NIT </th>
+                        <th>Acciones</th>
                     <tr>
                     </thead>
                     <tbody>
@@ -33,6 +36,8 @@
                             <td>{{ $escuela->contacto_documento }}</td>
                             <td>{{ $escuela->contacto_telefono }}</td>
                             <td>{{ $escuela->contacto_email }}</td>
+                            <td>{{ $escuela->codigo_dane }}</td>
+                            <td>{{ $escuela->nit }}</td>
                             <td>
                                 <a href="{{ route("escuelas.delete",$escuela->id) }}">Eliminar</a> &nbsp;
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#updateEscuela" 
@@ -44,7 +49,9 @@
                                             document.getElementById('contacto_telefonoEdit').value='{{ $escuela->contacto_telefono }}';
                                             document.getElementById('contacto_emailEdit').value='{{ $escuela->contacto_email }}';
                                             document.getElementById('contacto_documentoEdit').value='{{ $escuela->contacto_documento }}';
-                                            document.getElementById('contacto_tipo_documentoEdit').value='{{ $escuela->contacto_tipo_documento }}';"
+                                            document.getElementById('contacto_tipo_documentoEdit').value='{{ $escuela->contacto_tipo_documento }}';
+                                            document.getElementById('codigo_daneEdit').value='{{ $escuela->codigo_dane }}';
+                                            document.getElementById('nitEdit').value='{{ $escuela->nit }}';"
 
                                    >Editar Escuela
                                 </a>
@@ -118,6 +125,16 @@
                             <label for="contacto_tipo_documento" class="form-label">Tipo de Documento</label>
                             <input type="text" class="form-control" id="contacto_tipo_documento" name="contacto_tipo_documento" placeholder="Ingrese el tipo de documento">
                         </div>
+                        <!-- Codigo DANE -->
+                        <div class="mb-3">
+                            <label for="codigo_dane" class="form-label">Codigo DANE</label>
+                            <input type="text" class="form-control" id="codigo_dane" name="codigo_dane" placeholder="Ingrese el codigo DANE">  
+                        </div>
+                        <!-- NIT -->
+                        <div class="mb-3">
+                            <label for="nit" class="form-label">NIT</label>
+                            <input type="text" class="form-control" id="nit" name="nit" placeholder="Ingrese el NIT">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -189,6 +206,16 @@
                         <div class="mb-3">
                             <label for="contacto_tipo_documento" class="form-label">Tipo de Documento</label>
                             <input type="text" class="form-control" id="contacto_tipo_documentoEdit" name="contacto_tipo_documento" placeholder="Ingrese el tipo de documento">
+                        </div>
+                        <!-- Codigo DANE -->
+                        <div class="mb-3">
+                            <label for="codigo_dane" class="form-label">Codigo DANE</label>
+                            <input type="text" class="form-control" id="codigo_dane" name="codigo_dane" placeholder="Ingrese el codigo DANE">  
+                        </div>
+                        <!-- NIT -->
+                        <div class="mb-3">
+                            <label for="nit" class="form-label">NIT</label>
+                            <input type="text" class="form-control" id="nit" name="nit" placeholder="Ingrese el NIT">
                         </div>
                     </div>
                     <div class="modal-footer">

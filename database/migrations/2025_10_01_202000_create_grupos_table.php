@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('grupos', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::create('grupos', function (Blueprint $table) {                 
+            $table->string('grado')->nullable();                
+            $table->string('seccion')->nullable();  
         });
     }
 

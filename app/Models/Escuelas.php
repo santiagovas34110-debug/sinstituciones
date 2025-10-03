@@ -21,7 +21,9 @@ class Escuelas extends Model
            'contacto_telefono',
            'contacto_email',
            'contacto_documento',
-           'contacto_tipo_documento'
+           'contacto_tipo_documento',
+           'codigo_dane',
+           'nit'
     ];
     public function profesores(){
         return $this->hasMany(Profesor::class,'id_escuela','id');
