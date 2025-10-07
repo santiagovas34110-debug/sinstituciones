@@ -136,6 +136,16 @@
             <span class="pc-mtext">Estudiantes</span>
           </a>
         </li>
+          <li class="pc-item">
+           <a href="{{ route('checklist.panel') }}" class="pc-link">
+             <span class="pc-micon">
+               <svg class="pc-icon">
+                 <use xlink:href="#custom-story"></use>
+               </svg>
+               </span>
+             <span class="pc-mtext">Segumiento</span>
+             </a>
+          </li>
       </ul>
     </div>
   </div>

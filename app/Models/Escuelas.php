@@ -28,4 +28,9 @@ class Escuelas extends Model
     public function profesores(){
         return $this->hasMany(Profesor::class,'id_escuela','id');
     }
+    public function checklists()
+    {
+        return $this->hasMany(Checklist::class, 'id_escuela', 'id');
+    }
+
 }
