@@ -832,6 +832,9 @@
 
 </body>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.4/css/dataTables.bootstrap5.min.css" />
+<script src="https://cdn.datatables.net/2.3.4/js/dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/2.3.4/js/dataTables.bootstrap5.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function() {
@@ -846,6 +849,8 @@
         @if (session()->has('warning'))
             Swal.fire('', '{{ session()->get('warning') }}', 'warning');
         @endif
+
+        $(".dt").DataTable();
     });
 </script>
 

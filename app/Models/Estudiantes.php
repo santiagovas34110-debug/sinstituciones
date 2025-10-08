@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Profesor;
 use App\Models\Grupo;
+use App\Models\Escuelas;
 
 
 class Estudiantes extends Model
@@ -16,8 +17,10 @@ class Estudiantes extends Model
 
     protected $fillable = [
         "id_profesor",
+        "id_escuela",
         "nombre",
         "apellido",
+        "tipo_documento",
         "documento",
         "fecha_nacimiento",
         "genero",
@@ -26,7 +29,7 @@ class Estudiantes extends Model
         "email_responsable",
         "parentesco_responsable",
         "direccion",
-        "id_grado",
+        "grado",
         "seccion",
         "fecha_inscripcion",
         "activo"
@@ -38,5 +41,9 @@ class Estudiantes extends Model
 
     public function grupo(){
         return $this->benlongsTo(Grupo::class, 'id_grado');
+    }
+
+    public function escuela(){
+        return $this->belongsTo(Escuelas::class, 'id_escuela');
     }
 }

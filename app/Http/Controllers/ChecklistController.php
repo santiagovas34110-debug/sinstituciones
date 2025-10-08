@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Checklist;
 use App\Models\Escuelas;
+use App\Imports\EstudiantesImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ChecklistController extends Controller
 {
@@ -44,7 +46,14 @@ class ChecklistController extends Controller
             'documento_docentes' => 'required|file',
         ]);
 
+
+
         $checklist = Checklist::firstOrCreate(['id_escuela' => $id]);
+
+        $archivoEstudiantes = $request->file('documento_estudiantes');
+
+        Excel::import(new EstudiantesImport($id), $archivoEstudiantes);
+
 
         // Guardar archivos
         $checklist->fecha_agendamiento = $request->fecha_agendamiento;
