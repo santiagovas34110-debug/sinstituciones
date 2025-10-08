@@ -6,10 +6,13 @@ use App\Http\Controllers\InstitucionesController;
 use App\Http\Controllers\ProfesorController;
 use App\Http\Controllers\EstudiantesController;
 use App\Http\Controllers\ChecklistController;
+use App\Http\Controllers\UsersController;
 
-
+ // ================= Autentificación ================
 Route::get('login',[AuthController::class,'login'])->name('login');
 Route::post('doLogin',[AuthController::class,'doLogin'])->name('doLogin');
+Route::get('register', [AuthController::class, 'register'])->name('register');
+Route::post('doRegister', [AuthController::class, 'doRegister'])->name('doRegister');
 
 Route::middleware('auth')->group(function(){
     
@@ -44,5 +47,11 @@ Route::middleware('auth')->group(function(){
     Route::post('/checklist/{id}/conexion', [ChecklistController::class, 'storeConexion'])->name('checklist.conexion');
     Route::post('/checklist/{id}/experiencia', [ChecklistController::class, 'storeExperiencia'])->name('checklist.experiencia');
     Route::post('/checklist/{id}/reflexion', [ChecklistController::class, 'storeReflexion'])->name('checklist.reflexion');
+
+    // ================== Usuarios ==================
+
+    Route::get('users', [UsersController::class, 'index'])->name('users.index');
+    Route::post('crearToken', [UsersController::class, 'crearToken'])->name('tokens.create');
+
 
 });
