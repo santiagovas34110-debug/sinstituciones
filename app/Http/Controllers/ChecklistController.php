@@ -58,10 +58,10 @@ class ChecklistController extends Controller
         $checklist->documento_estudiantes = $archivoEstudiantes->store('documentos', 'public');
     }
 
-    if ($request->hasFile('documento_profesores')) {
-        $archivoProfesores = $request->file('documento_profesores');
+    if ($request->hasFile('documento_docentes')) {
+        $archivoProfesores = $request->file('documento_docentes');
         Excel::import(new PrafesoresImport($id), $archivoProfesores);
-        $checklist->documento_profesores = $archivoProfesores->store('documentos', 'public');
+        $checklist->documento_docentes = $archivoProfesores->store('documentos', 'public');
     }
 
     // Guardar datos
