@@ -26,6 +26,7 @@ class Profesor extends Model
         "especialidad",
         "fecha_ingreso",
         "salario",
+        "grado",
         "activo"
     ];
     public function escuela()

@@ -7,6 +7,7 @@ use App\Models\Checklist;
 use App\Models\Escuelas;
 use App\Imports\EstudiantesImport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\imports\ProfesoresImport;
 
 class ChecklistController extends Controller
 {
@@ -55,6 +56,12 @@ class ChecklistController extends Controller
         $archivoEstudiantes = $request->file('documento_estudiantes');
         Excel::import(new EstudiantesImport($id), $archivoEstudiantes);
         $checklist->documento_estudiantes = $archivoEstudiantes->store('documentos', 'public');
+    }
+
+    if ($request->hasFile('documento_profesores')) {
+        $archivoProfesores = $request->file('documento_profesores');
+        Excel::import(new PrafesoresImport($id), $archivoProfesores);
+        $checklist->documento_profesores = $archivoProfesores->store('documentos', 'public');
     }
 
     // Guardar datos

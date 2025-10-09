@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Profesor;
 use App\Models\Escuelas;
 
+
 class ProfesorController extends Controller
 {
    public function index()
@@ -36,6 +37,7 @@ public function profesores()
         $especialidad = $request->especialidad;
         $fecha_ingreso = $request->fecha_ingreso;
         $salario = $request->salario;
+        $grado = $request->grado;
         $activo = $request->activo ?? true;
 
         Profesor::create([
@@ -52,6 +54,7 @@ public function profesores()
             "especialidad" => $especialidad,
             "fecha_ingreso" => $fecha_ingreso,
             "salario" => $salario,
+            "grado" => $grado,  
             "activo" => $activo
         ]);
 
@@ -81,6 +84,7 @@ public function profesores()
         $especialidad = $request->especialidad;
         $fecha_ingreso = $request->fecha_ingreso;
         $salario = $request->salario;
+        $grado = $request->grado;   
         $activo = $request->activo ?? true;
 
         Profesor::where('id',$id)->update([
@@ -97,6 +101,7 @@ public function profesores()
             "especialidad" => $especialidad,
             "fecha_ingreso" => $fecha_ingreso,
             "salario" => $salario,
+            "grado" => $grado,  
             "activo" => $activo
         ]);
 

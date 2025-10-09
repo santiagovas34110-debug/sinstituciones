@@ -41,6 +41,7 @@
                         <th>Fecha Ingreso</th>
                         <th>Salario</th>
                         <th>Escuela</th>
+                        <th>grado</th>
                         <th>Activo</th>
                         <th>Acciones</th>
                     </tr>
@@ -59,6 +60,7 @@
                             <td>{{ $profesor->fecha_ingreso }}</td>
                             <td>${{ number_format($profesor->salario ?? 0, 0, ',', '.') }}</td>
                             <td>{{ $profesor->escuela->nombre ?? 'Sin escuela' }}</td>
+                            <td>{{ $profesor->grado }}</td>
                             <td>{{ $profesor->activo ? 'Sí' : 'No' }}</td>
                             <td>
                                 {{-- Si tu ruta para eliminar es GET (como la tenías), queda así: --}}
@@ -82,6 +84,7 @@
                                        document.getElementById('especialidadEdit').value='{{ $profesor->especialidad }}';
                                        document.getElementById('fechaIngresoEdit').value='{{ $profesor->fecha_ingreso }}';
                                        document.getElementById('salarioEdit').value='{{ $profesor->salario }}';
+                                       document.getElementById('gradoEdit').value='{{ $profesor->grado }}'; 
                                        document.getElementById('activoEdit').value='{{ $profesor->activo }}';
                                        document.getElementById('escuelaEdit').value='{{ $profesor->id_escuela ?? '' }}';
                                    ">
@@ -175,6 +178,10 @@
                                     <option value="{{ $escuela->id }}">{{ $escuela->nombre }}</option>
                                 @endforeach
                             </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="grado" class="form-label">Grado</label>
+                            <input type="text" class="form-control" name="grado" id="grado">
                         </div>
 
                         {{-- Estado --}}
@@ -274,6 +281,11 @@
                                     <option value="{{ $escuela->id }}">{{ $escuela->nombre }}</option>
                                 @endforeach
                             </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="gradoEdit" class="form-label">Grado</label>
+                            <input type="text" class="form-control" id="gradoEdit" name="grado">    
                         </div>
 
                         <div class="col-md-6">
