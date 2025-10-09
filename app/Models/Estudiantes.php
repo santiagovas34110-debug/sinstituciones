@@ -40,7 +40,7 @@ class Estudiantes extends Model
     }
 
     public function grupo(){
-        return $this->benlongsTo(Grupo::class, 'id_grado');
+        return $this->belongsTo(Grupo::class, 'id_grado');
     }
 
     public function escuela(){

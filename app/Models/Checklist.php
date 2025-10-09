@@ -11,6 +11,7 @@ class Checklist extends Model
 
     protected $fillable = [
         'id_escuela',
+        'fecha_preconexion',
         'fecha_agendamiento',
         'documento_estudiantes',
         'documento_docentes',
