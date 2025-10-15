@@ -18,6 +18,11 @@ class Checklist extends Model
         'estudiantes_asistieron',
         'docentes_asistieron',
         'documento_reflexion',
+        'fecha_experiencia_1',
+        'fecha_experiencia_2',
+        'fecha_experiencia_3',
+        'fecha_experiencia_4',
+        'fecha_experiencia_5',
     ];
 
     public function escuela()

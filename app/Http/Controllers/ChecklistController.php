@@ -35,7 +35,11 @@ class ChecklistController extends Controller
         $escuela = Escuelas::findOrFail($id);
         $checklist = Checklist::firstOrCreate(['id_escuela' => $id]);
 
-        return view('checklist.index', compact('escuela', 'checklist'));
+       return view('checklist.index', [
+        'escuela' => $escuela,
+        'checklist' => $checklist,
+        'id_escuela' => $escuela->id, 
+        ]);
     }
 
     // === MOMENTO 1: CONEXIÓN ===
@@ -60,7 +64,7 @@ class ChecklistController extends Controller
 
     if ($request->hasFile('documento_docentes')) {
         $archivoProfesores = $request->file('documento_docentes');
-        Excel::import(new PrafesoresImport($id), $archivoProfesores);
+        Excel::import(new ProfesoresImport($id), $archivoProfesores);
         $checklist->documento_docentes = $archivoProfesores->store('documentos', 'public');
     }
 
@@ -105,77 +109,59 @@ public function updateConexion(Request $request, $id)
 
     return back()->with('success', '✅ Conexión actualizada correctamente.');
 }
-      // Eliminar archivos del momento 1 (Conexión)
-public function deleteArchivoConexion($id, $tipo)
+
+   // === MOMENTO 2: EXPERIENCIA ===
+public function updateExperiencia(Request $request, $id)
 {
     $checklist = Checklist::where('id_escuela', $id)->firstOrFail();
 
-    if ($tipo === 'estudiantes') {
-        if ($checklist->documento_estudiantes) {
-            \Storage::disk('public')->delete($checklist->documento_estudiantes);
-        }
-        $checklist->documento_estudiantes = null;
-    } elseif ($tipo === 'docentes') {
-        if ($checklist->documento_docentes) {
-            \Storage::disk('public')->delete($checklist->documento_docentes);
-        }
-        $checklist->documento_docentes = null;
+    // Asegura que el momento "Conexión" esté completado antes
+    if (!$checklist->fecha_agendamiento) {
+        return back()->with('error', '⚠️ Primero debes completar el momento Conexión.');
     }
 
-    $checklist->save();
+    // Validación flexible: solo valida lo que llega
+    $rules = [
+        'estudiantes_asistieron' => 'nullable|integer|min:0',
+        'docentes_asistieron' => 'nullable|integer|min:0',
+        'fecha_experiencia_1' => 'nullable|date',
+        'fecha_experiencia_2' => 'nullable|date',
+        'fecha_experiencia_3' => 'nullable|date',
+        'fecha_experiencia_4' => 'nullable|date',
+        'fecha_experiencia_5' => 'nullable|date',
+    ];
 
-    return back()->with('warning', '⚠️ Archivo eliminado correctamente.');
+    $validated = $request->validate($rules);
+
+    // Filtrar solo los campos con valor, para no sobrescribir con null
+    $data = array_filter($validated, fn($value) => !is_null($value));
+
+    // Si no hay ningún campo válido, no hacemos nada
+    if (empty($data)) {
+        return back()->with('warning', '⚠️ No se detectaron cambios para guardar.');
+    }
+
+    // Guardar solo lo que llega
+    $checklist->update($data);
+
+    return back()->with('success', '✅ Experiencia guardada correctamente.');
 }
 
-    // === MOMENTO 2: EXPERIENCIA ===
-    public function storeExperiencia(Request $request, $id)
-    {
-        $checklist = Checklist::where('id_escuela', $id)->firstOrFail();
+// === BORRAR UNA FECHA ESPECÍFICA ===
+public function deleteFechaExperiencia($id, $num)
+{
+    $checklist = Checklist::where('id_escuela', $id)->firstOrFail();
 
-        if (!$checklist->fecha_agendamiento) {
-            return back()->with('error', '⚠️ Primero debes completar el momento Conexión.');
-        }
-
-        $request->validate([
-            'estudiantes_asistieron' => 'required|integer|min:0',
-            'docentes_asistieron' => 'required|integer|min:0',
-        ]);
-
-        $checklist->update([
-            'estudiantes_asistieron' => $request->estudiantes_asistieron,
-            'docentes_asistieron' => $request->docentes_asistieron,
-        ]);
-
-        return back()->with('success', '✅ Experiencia guardada correctamente.');
-    }
-
-    // Actualizar momento 2 (Experiencia)
-    public function updateExperiencia(Request $request, $id)
-    {
-        $checklist = Checklist::where('id_escuela', $id)->firstOrFail();
-        if (!$checklist->fecha_agendamiento) {
-            return back()->with('error', '⚠️ Primero debes completar el momento Conexión.');
-        }
-        $request->validate([
-            'estudiantes_asistieron' => 'required|integer|min:0',
-            'docentes_asistieron' => 'required|integer|min:0',
-        ]);
-        $checklist->update([
-            'estudiantes_asistieron' => $request->estudiantes_asistieron,
-            'docentes_asistieron' => $request->docentes_asistieron,
-        ]);
-        return back()->with('success', '✅ Experiencia actualizada correctamente.');
-    }
-
-    // Eliminar datos del momento 2 (Experiencia)
-    public function deleteExperiencia(Request $request, $id)
-    {
-        $checklist = Checklist::where('id_escuela', $id)->firstOrFail();  
-        $checklist->estudiantes_asistieron = null;
-        $checklist->docentes_asistieron = null;
+    if ($num >= 1 && $num <= 5) {
+        $campo = 'fecha_experiencia_' . $num;
+        $checklist->$campo = null;
         $checklist->save();
-        return back()->with('warning', '⚠️ Datos de Experiencia eliminados correctamente.');
-    }   
+
+        return back()->with('warning', "⚠️ Fecha de experiencia {$num} eliminada correctamente.");
+    }
+
+    return back()->with('error', '❌ Fecha inválida.');
+}
     
     // === MOMENTO 3: REFLEXIÓN ===
     public function storeReflexion(Request $request, $id)

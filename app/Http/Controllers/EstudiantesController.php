@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Estudiantes;
 use App\Models\Profesor;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\HeadingRowFormatter;
+use App\Imports\EstudiantesImport;
+
 class EstudiantesController extends Controller
 {
     // Mostrar lista de profesores
