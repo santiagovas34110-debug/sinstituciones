@@ -45,7 +45,9 @@ Route::middleware('auth')->group(function(){
     Route::get('/checklist/{id}', [ChecklistController::class, 'show'])->name('checklist.show');
     Route::post('/checklist/{id}/conexion', [ChecklistController::class, 'storeConexion'])->name('checklist.conexion');
     Route::put('/checklist/{id}/update', [ChecklistController::class, 'updateconexion'])->name('updateconexion');
-    Route::post('/checklist/{id}/experiencia', [ChecklistController::class, 'storeExperiencia'])->name('checklist.experiencia');
+    //Route::post('/checklist/experiencia', [ChecklistController::class, 'experiencia'])->name('checklist.experiencia');
+    Route::put('/checklist/{id}/experiencia', [ChecklistController::class, 'updateExperiencia'])->name('checklist.updateExperiencia');
+    Route::delete('/checklist/{id}/experiencia/fechas/{num}', [ChecklistController::class, 'deleteFechaExperiencia'])->name('checklist.deleteFechaExperiencia');
     Route::post('/checklist/{id}/reflexion', [ChecklistController::class, 'storeReflexion'])->name('checklist.reflexion');
 
     // ================== Usuarios ==================

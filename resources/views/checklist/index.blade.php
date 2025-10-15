@@ -23,7 +23,7 @@
     @if($checklist && $checklist->fecha_preconexion)
       {{-- Mostrar fechas y documentos --}}
       <p><strong>Fecha de Preconexión:</strong> {{ $checklist->fecha_preconexion }}</p>
-      <p><strong>Fecha agendada:</strong> {{ $checklist->fecha_agendamiento }}</p>
+      <p><strong>Fecha Conexión:</strong> {{ $checklist->fecha_agendamiento }}</p>
       @if($checklist->documento_estudiantes)
         <p>📄 <a href="{{ asset('storage/'.$checklist->documento_estudiantes) }}" target="_blank">Base estudiantes</a></p>
       @endif
@@ -78,32 +78,101 @@
   </div>
 </div>
 
-  {{-- MOMENTO 2: EXPERIENCIA --}}
-  <div class="card mb-4 border-warning">
-    <div class="card-header bg-warning text-dark">2️⃣ Momento: Experiencia</div>
-    <div class="card-body">
-      @if(!$checklist->fecha_agendamiento)
-        <div class="alert alert-secondary">⚠️ Debes completar primero el momento Conexión.</div>
-      @elseif($checklist->estudiantes_asistieron)
+{{-- MOMENTO 2: EXPERIENCIA --}}
+<div class="card mb-4 border-warning">
+  <div class="card-header bg-warning text-dark">2️⃣ Momento: Experiencia</div>
+  <div class="card-body">
+    @if(!$checklist->fecha_agendamiento)
+      <div class="alert alert-secondary">⚠️ Debes completar primero el momento Conexión.</div>
+    @else
+      {{-- === FECHAS DE EXPERIENCIA (PRIMERO) === --}}
+      <h5 class="mt-2">Fechas de la Experiencia</h5>
+
+      <form action="{{ route('checklist.updateExperiencia', $escuela->id) }}" method="POST">
+        @csrf
+        @method('PUT')
+
+        <div id="contenedorFechas">
+          @for($i = 1; $i <= 5; $i++)
+            @php $campo = 'fecha_experiencia_' . $i; @endphp
+            <div class="mb-2 fecha-item" id="fecha{{ $i }}"
+                 style="{{ $checklist->$campo ? '' : ($i == 1 ? '' : 'display:none;') }}">
+              <label>Fecha {{ $i }}{{ $i == 1 ? ' *' : '' }}</label>
+              <div class="input-group">
+                <input type="date" name="fecha_experiencia_{{ $i }}" class="form-control"
+                       value="{{ $checklist->$campo }}">
+
+                {{-- Botón borrar (cada uno en su form aparte) --}}
+                @if($i > 1 && $checklist->$campo)
+                  <button type="button" class="btn btn-danger ms-2"
+                          onclick="document.getElementById('delete-fecha-{{ $i }}').submit();">
+                    Borrar
+                  </button>
+                @endif
+              </div>
+            </div>
+          @endfor
+        </div>
+
+        <button type="button" class="btn btn-secondary mt-2" id="btnAgregarFecha">+ Agregar otra experiencia</button>
+        <button type="submit" class="btn btn-primary mt-2">Guardar Fechas</button>
+      </form>
+
+      {{-- Formularios ocultos para eliminar fechas --}}
+      @for($i = 2; $i <= 5; $i++)
+        <form id="delete-fecha-{{ $i }}" action="{{ route('checklist.deleteFechaExperiencia', [$escuela->id, $i]) }}" 
+              method="POST" style="display:none;">
+          @csrf
+          @method('DELETE')
+        </form>
+      @endfor
+
+      <script>
+      document.addEventListener('DOMContentLoaded', () => {
+          const maxFechas = 5;
+          const btnAgregar = document.getElementById('btnAgregarFecha');
+
+          btnAgregar.addEventListener('click', () => {
+              for (let i = 2; i <= maxFechas; i++) {
+                  const div = document.getElementById('fecha' + i);
+                  if (div && div.style.display === 'none') {
+                      div.style.display = '';
+                      return;
+                  }
+              }
+              alert('⚠️ Solo puedes agregar hasta 5 fechas.');
+          });
+      });
+      </script>
+      {{-- === FIN FECHAS DE EXPERIENCIA === --}}
+
+      <hr>
+
+      {{-- === DATOS DE ASISTENCIA (DESPUÉS DE FECHAS) === --}}
+      @if($checklist->estudiantes_asistieron)
         <p><strong>Estudiantes que asistieron:</strong> {{ $checklist->estudiantes_asistieron }}</p>
         <p><strong>Docentes que asistieron:</strong> {{ $checklist->docentes_asistieron }}</p>
         <div class="alert alert-success">✅ Experiencia completada</div>
       @else
-        <form action="{{ route('checklist.experiencia', $escuela->id) }}" method="POST">
+        <form action="{{ route('checklist.updateExperiencia', $escuela->id) }}" method="POST">
           @csrf
+          @method('PUT')
+
           <div class="mb-3">
             <label class="form-label">Cantidad de estudiantes que asistieron</label>
-            <input type="number" name="estudiantes_asistieron" class="form-control" required>
+            <input type="number" name="estudiantes_asistieron" class="form-control" >
           </div>
           <div class="mb-3">
             <label class="form-label">Cantidad de docentes que asistieron</label>
-            <input type="number" name="docentes_asistieron" class="form-control" required>
+            <input type="number" name="docentes_asistieron" class="form-control" >
           </div>
+
           <button class="btn btn-success">Guardar Experiencia</button>
         </form>
       @endif
-    </div>
+    @endif
   </div>
+</div>
 
   {{-- MOMENTO 3: REFLEXIÓN --}}
   <div class="card mb-4 border-success">
