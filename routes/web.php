@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfesorController;
 use App\Http\Controllers\EstudiantesController;
 use App\Http\Controllers\ChecklistController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\ExperienciaController;
 
  // ================= Autentificación ================
 Route::get('login',[AuthController::class,'login'])->name('login');
@@ -40,17 +41,34 @@ Route::middleware('auth')->group(function(){
     Route::post('estudiantes/update',[EstudiantesController::class,'update'])->name("estudiantes.update");
     Route::get('estudiantes/eliminar/{id}',[EstudiantesController::class,'delete'])->name("estudiantes.destroy");
 
-    // ================= checklist =================
+   // ================= checklist =================
     Route::get('/checklist/panel', [ChecklistController::class, 'panel'])->name('checklist.panel');
     Route::get('/checklist/{id}', [ChecklistController::class, 'show'])->name('checklist.show');
     Route::post('/checklist/{id}/conexion', [ChecklistController::class, 'storeConexion'])->name('checklist.conexion');
     Route::put('/checklist/{id}/update', [ChecklistController::class, 'updateconexion'])->name('updateconexion');
-    //Route::post('/checklist/experiencia', [ChecklistController::class, 'experiencia'])->name('checklist.experiencia');
     Route::put('/checklist/{id}/experiencia', [ChecklistController::class, 'updateExperiencia'])->name('checklist.updateExperiencia');
     Route::delete('/checklist/{id}/experiencia/fechas/{num}', [ChecklistController::class, 'deleteFechaExperiencia'])->name('checklist.deleteFechaExperiencia');
     Route::post('/checklist/{id}/reflexion', [ChecklistController::class, 'storeReflexion'])->name('checklist.reflexion');
 
-    // ================== Usuarios ==================
+    // ================= experiencias =================
+    // Mostrar lista completa de estudiantes (clonado si es necesario)
+    Route::get('/experiencias/{idEscuela}', [ExperienciaController::class, 'show'])->name('experiencias.show');
+
+    // Gestionar asistencia por fecha (solo editar los ya marcados)
+    Route::get('/experiencias/{idEscuela}/asistencias-guardadas', [ExperienciaController::class, 'gestionar'])->name('experiencias.asistenciasGuardadas');
+
+    // Guardar asistencia masiva
+    Route::post('/experiencias/{idEscuela}/asistencia', [ExperienciaController::class, 'storeAsistencia'])->name('experiencias.asistencia.store');
+
+    // Marcar asistencia individual
+    Route::post('/asistencia/{id}', [ExperienciaController::class, 'marcarAsistencia'])->name('asistencia.marcar');
+
+    // Crear estudiante desde la experiencia
+    Route::post('/experiencias/{idEscuela}/crear-estudiante', [ExperienciaController::class, 'crearEstudiante'])->name('experiencias.crearEstudiante');
+
+    // Reflexión final
+    Route::post('/checklist/{id}/reflexion', [ChecklistController::class, 'storeReflexion'])->name('checklist.reflexion');
+     // ================== Usuarios ==================
 
     Route::get('users', [UsersController::class, 'index'])->name('users.index');
     Route::post('crearToken', [UsersController::class, 'crearToken'])->name('tokens.create');

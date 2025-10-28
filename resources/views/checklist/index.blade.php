@@ -82,6 +82,11 @@
 <div class="card mb-4 border-warning">
   <div class="card-header bg-warning text-dark">2️⃣ Momento: Experiencia</div>
   <div class="card-body">
+    @if(session('success'))
+      <div class="alert alert-success mt-2">
+          {{ session('success') }}
+      </div>
+    @endif
     @if(!$checklist->fecha_agendamiento)
       <div class="alert alert-secondary">⚠️ Debes completar primero el momento Conexión.</div>
     @else
@@ -147,29 +152,9 @@
       {{-- === FIN FECHAS DE EXPERIENCIA === --}}
 
       <hr>
-
-      {{-- === DATOS DE ASISTENCIA (DESPUÉS DE FECHAS) === --}}
-      @if($checklist->estudiantes_asistieron)
-        <p><strong>Estudiantes que asistieron:</strong> {{ $checklist->estudiantes_asistieron }}</p>
-        <p><strong>Docentes que asistieron:</strong> {{ $checklist->docentes_asistieron }}</p>
-        <div class="alert alert-success">✅ Experiencia completada</div>
-      @else
-        <form action="{{ route('checklist.updateExperiencia', $escuela->id) }}" method="POST">
-          @csrf
-          @method('PUT')
-
-          <div class="mb-3">
-            <label class="form-label">Cantidad de estudiantes que asistieron</label>
-            <input type="number" name="estudiantes_asistieron" class="form-control" >
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Cantidad de docentes que asistieron</label>
-            <input type="number" name="docentes_asistieron" class="form-control" >
-          </div>
-
-          <button class="btn btn-success">Guardar Experiencia</button>
-        </form>
-      @endif
+    <a href="{{ route('experiencias.show', $escuela->id) }}" class="btn btn-primary">
+      Gestionar experiencia
+    </a>
     @endif
   </div>
 </div>
