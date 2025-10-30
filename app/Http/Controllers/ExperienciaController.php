@@ -16,13 +16,15 @@ class ExperienciaController extends Controller
     {
         $escuela = Escuelas::findOrFail($idEscuela);
 
+        $idEscuela = $escuela->id;
+
         // Traer experiencias para este colegio
-        $experiencias = Experiencia::where('id_escuela', $idEscuela)->get();
+        $estudiantes = Estudiantes::where('id_escuela', $idEscuela)->get();
 
         // SIN SINCRONIZAR AÚN. La sincronización se hace al gestionar asistencia,
         // porque depende de una fecha seleccionada.
 
-        return view('experiencias.show', compact('escuela', 'experiencias'));
+        return view('experiencias.show', compact('escuela', 'estudiantes'));
     }
 
     // Gestionar asistencias por fecha
@@ -104,7 +106,7 @@ class ExperienciaController extends Controller
 
         foreach ($estudiantes as $registroId => $data) {
             $registro = EstudianteExperiencia::where('id', $registroId)
-                ->where('id_escuela', $idEscuela)
+                ->where('id_experiencia', $idExperiencia)
                 ->first();
 
             if (!$registro) continue;
@@ -118,7 +120,7 @@ class ExperienciaController extends Controller
         }
 
         // Actualizamos contador en checklist (según escuela)
-        $contadorAsistieron = EstudianteExperiencia::where('id_escuela', $idEscuela)
+        $contadorAsistieron = EstudianteExperiencia::where('id_experiencia', $idExperiencia)
             ->where('asistencia', 1)
             ->count();
 

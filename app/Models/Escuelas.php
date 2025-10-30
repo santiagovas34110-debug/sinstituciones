@@ -42,9 +42,4 @@ class Escuelas extends Model
     {
         return $this->hasMany(experiencia::class, 'id_escuela', 'id');
     }
-
-    public function estudiantes()
-    {
-        return $this->hasMany(Estudiantes::class, 'id_escuela', 'id');
-    }   
 }

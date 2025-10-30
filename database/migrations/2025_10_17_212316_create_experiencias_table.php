@@ -17,8 +17,6 @@ return new class extends Migration
     $table->unsignedBigInteger('estudiante_id');
     $table->boolean('asistencia')->default(false);
 
-    $table->foreign('checklist_id')->references('id')->on('checklists')->onDelete('cascade');
-    $table->foreign('estudiante_id')->references('id')->on('estudiantes')->onDelete('cascade');
 
     $table->timestamps();
     });

@@ -19,9 +19,6 @@ return new class extends Migration
 
             $table->timestamps();
 
-            // FOREIGN KEYS
-            $table->foreign('id_experiencia')->references('id')->on('experiencias')->onDelete('cascade');
-            $table->foreign('id_estudiante')->references('id')->on('estudiantes')->onDelete('cascade');
 
             // Evitar duplicados (UN ESTUDIANTE solo 1 vez por experiencia)
             $table->unique(['id_experiencia', 'id_estudiante']);

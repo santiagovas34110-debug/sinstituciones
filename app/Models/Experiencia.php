@@ -9,6 +9,8 @@ class Experiencia extends Model
 {
     use HasFactory;
 
+    protected $table = 'checklists';
+
     protected $fillable = [
         'id_checklist',
         'id_escuela',
