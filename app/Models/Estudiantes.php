@@ -46,4 +46,12 @@ class Estudiantes extends Model
     public function escuela(){
         return $this->belongsTo(Escuelas::class, 'id_escuela');
     }
+
+    public function experiencias()
+{
+    return $this->belongsToMany(Experiencia::class, 'estudiante_experiencia', 'id_estudiante', 'id_experiencia')
+     ->withPivot('asistencia', 'fecha_experiencia')
+     ->withTimestamps();
+     }
+
 }

@@ -29,4 +29,9 @@ class Checklist extends Model
     {
         return $this->belongsTo(Escuelas::class, 'id_escuela', 'id');
     }
+
+    public function experiencias()
+    {
+    return $this->hasMany(Experiencia::class, 'id_checklist', 'id');
+    }
 }

@@ -8,6 +8,7 @@ use App\Models\Escuelas;
 use App\Imports\EstudiantesImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\imports\ProfesoresImport;
+use App\Models\Experiencia;
 
 class ChecklistController extends Controller
 {
@@ -111,41 +112,64 @@ public function updateConexion(Request $request, $id)
 }
 
    // === MOMENTO 2: EXPERIENCIA ===
-public function updateExperiencia(Request $request, $id)
+// === MOMENTO 2: EXPERIENCIA ===
+public function updateExperiencia(Request $request, $idEscuela)
 {
-    $checklist = Checklist::where('id_escuela', $id)->firstOrFail();
+    $checklist = Checklist::where('id_escuela', $idEscuela)->firstOrFail();
 
-    // Asegura que el momento "Conexión" esté completado antes
-    if (!$checklist->fecha_agendamiento) {
-        return back()->with('error', '⚠️ Primero debes completar el momento Conexión.');
+    // Recoger las fechas del formulario (fecha_experiencia_1 ... fecha_experiencia_5)
+    $fechas = [];
+    for ($i = 1; $i <= 5; $i++) {
+        $campo = 'fecha_experiencia_' . $i;
+        if ($request->filled($campo)) {
+            $fechas[$i] = $request->input($campo);
+            $checklist->$campo = $fechas[$i]; // actualizar checklist
+        } else {
+            $checklist->$campo = null; // limpiar si está vacío
+        }
+    }
+    $checklist->save();
+
+    // Crear Experiencias y EstudianteExperiencia para cada fecha
+    foreach ($fechas as $num => $fecha) {
+        // Crear o encontrar la experiencia (guardamos id_checklist)
+        $experiencia = Experiencia::firstOrCreate(
+            ['id_escuela' => $idEscuela, 'fecha_experiencia' => $fecha],
+            [
+                'id_checklist' => $checklist->id,
+                'tipo_documento' => null,
+                'documento' => null,
+                'primer_nombre' => null,
+                'segundo_nombre' => null,
+                'primer_apellido' => null,
+                'segundo_apellido' => null,
+                'grado' => null,
+                'asistencia' => false
+            ]
+        );
+
+        // Clonar estudiantes a EstudianteExperiencia si no existen (AHORA con id_experiencia y fecha_asistencia)
+        $alumnos = \App\Models\Estudiantes::where('id_escuela', $idEscuela)->get();
+        foreach ($alumnos as $alumno) {
+            \App\Models\EstudianteExperiencia::firstOrCreate(
+                [
+                    'id_experiencia' => $experiencia->id,
+                    'id_estudiante' => $alumno->id
+                ],
+                [
+                    'id_escuela' => $idEscuela,
+                    'asistencia' => false,
+                    'fecha_asistencia' => null
+                ]
+            );
+        }
     }
 
-    // Validación flexible: solo valida lo que llega
-    $rules = [
-        'estudiantes_asistieron' => 'nullable|integer|min:0',
-        'docentes_asistieron' => 'nullable|integer|min:0',
-        'fecha_experiencia_1' => 'nullable|date',
-        'fecha_experiencia_2' => 'nullable|date',
-        'fecha_experiencia_3' => 'nullable|date',
-        'fecha_experiencia_4' => 'nullable|date',
-        'fecha_experiencia_5' => 'nullable|date',
-    ];
-
-    $validated = $request->validate($rules);
-
-    // Filtrar solo los campos con valor, para no sobrescribir con null
-    $data = array_filter($validated, fn($value) => !is_null($value));
-
-    // Si no hay ningún campo válido, no hacemos nada
-    if (empty($data)) {
-        return back()->with('warning', '⚠️ No se detectaron cambios para guardar.');
-    }
-
-    // Guardar solo lo que llega
-    $checklist->update($data);
-
-    return back()->with('success', '✅ Experiencia guardada correctamente.');
+    return redirect()
+        ->route('checklist.show', $idEscuela)
+        ->with('success', '✅ Fechas y experiencias actualizadas correctamente.');
 }
+
 
 // === BORRAR UNA FECHA ESPECÍFICA ===
 public function deleteFechaExperiencia($id, $num)
