@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Profesor;
+use App\Models\Estudiantes;
 
 class Escuelas extends Model
 
@@ -27,6 +28,10 @@ class Escuelas extends Model
     ];
     public function profesores(){
         return $this->hasMany(Profesor::class,'id_escuela','id');
+    }
+
+    public function estudiantes(){
+        return $this->hasMany(Estudiantes::class, 'id_escuela', 'id');
     }
     public function checklists()
     {

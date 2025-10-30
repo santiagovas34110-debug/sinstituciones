@@ -11,14 +11,19 @@ class ProfesorController extends Controller
 {
    public function index()
 {
-    $profesores = Profesor::with('escuela')->get();
+
+
     $escuelas = Escuelas::get(); // 🔥 agregamos las escuelas
     return view('profesores.index', compact('profesores', 'escuelas'));
 }
 
-public function profesores()
+public function profesores(Request $request)
 {
-    $profesores = Profesor::with('escuela')->get();
+    if($request->escuela){
+        $profesores = Profesor::where('id_escuela',$request->escuela)->with('escuela')->get();
+    }else{
+        $profesores = Profesor::with('escuela')->get();
+    }
     $escuelas = Escuelas::all(); // 🔥 igual aquí
     return view('profesores', compact('profesores', 'escuelas'));
 }

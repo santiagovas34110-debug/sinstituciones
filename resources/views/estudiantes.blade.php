@@ -27,6 +27,15 @@
                 </div>
             @endif
 
+            <select class="form-control" id="escuela"
+                onchange="window.location='{{ route('estudiantes.index') }}?escuela='+$('#escuela').val();">
+                <option value="">Seleccione una escuela</option>
+                @foreach ($escuelas as $escuela)
+                    <option @if (request()->has('escuela') && request()->get('escuela') == $escuela->id) selected @endif value="{{ $escuela->id }}">
+                        {{ $escuela->nombre }}</option>
+                @endforeach
+            </select>
+
             <table class="table table-striped dt">
                 <thead>
                     <tr>

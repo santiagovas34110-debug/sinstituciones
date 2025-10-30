@@ -8,14 +8,20 @@ use App\Models\Profesor;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\HeadingRowFormatter;
 use App\Imports\EstudiantesImport;
+use App\Models\Escuelas;
 
 class EstudiantesController extends Controller
 {
     // Mostrar lista de profesores
-    public function index() {
-        $estudiantes = Estudiantes::get();
+    public function index(Request $request) {
+        if($request->escuela){
+            $estudiantes = Estudiantes::where('id_escuela',$request->escuela)->get();
+        }else{
+            $estudiantes = Estudiantes::get();
+        }
         $profesores=Profesor::get(); // 🔥 agregamos los profesor
-        return view('estudiantes')->with(compact('estudiantes','profesores'));
+        $escuelas = Escuelas::get();
+        return view('estudiantes')->with(compact('estudiantes','profesores', 'escuelas'));
     }
 
     // Crear un nuevo estudiante

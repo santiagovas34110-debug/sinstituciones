@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
+class ComposerStaticInitfd69d539b221da017a91aba4c0594a25
 {
     public static $files = array (
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
@@ -609,6 +609,7 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'App\\Http\\Requests\\StoreRegisterTokensRequest' => __DIR__ . '/../..' . '/app/Http/Requests/StoreRegisterTokensRequest.php',
         'App\\Http\\Requests\\UpdateRegisterTokensRequest' => __DIR__ . '/../..' . '/app/Http/Requests/UpdateRegisterTokensRequest.php',
         'App\\Imports\\EstudiantesImport' => __DIR__ . '/../..' . '/app/Imports/EstudiantesImport.php',
+        'App\\Imports\\ProfesoresImport' => __DIR__ . '/../..' . '/app/Imports/ProfesoresImport.php',
         'App\\Models\\Checklist' => __DIR__ . '/../..' . '/app/Models/Checklist.php',
         'App\\Models\\Escuelas' => __DIR__ . '/../..' . '/app/Models/Escuelas.php',
         'App\\Models\\Estudiantes' => __DIR__ . '/../..' . '/app/Models/Estudiantes.php',
@@ -7715,10 +7716,10 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit9c491b8531eec05ba41a11d9276a5749::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit9c491b8531eec05ba41a11d9276a5749::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit9c491b8531eec05ba41a11d9276a5749::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit9c491b8531eec05ba41a11d9276a5749::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitfd69d539b221da017a91aba4c0594a25::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitfd69d539b221da017a91aba4c0594a25::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitfd69d539b221da017a91aba4c0594a25::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitfd69d539b221da017a91aba4c0594a25::$classMap;
 
         }, null, ClassLoader::class);
     }

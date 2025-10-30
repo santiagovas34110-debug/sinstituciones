@@ -30,6 +30,7 @@ return array(
     'App\\Http\\Requests\\StoreRegisterTokensRequest' => $baseDir . '/app/Http/Requests/StoreRegisterTokensRequest.php',
     'App\\Http\\Requests\\UpdateRegisterTokensRequest' => $baseDir . '/app/Http/Requests/UpdateRegisterTokensRequest.php',
     'App\\Imports\\EstudiantesImport' => $baseDir . '/app/Imports/EstudiantesImport.php',
+    'App\\Imports\\ProfesoresImport' => $baseDir . '/app/Imports/ProfesoresImport.php',
     'App\\Models\\Checklist' => $baseDir . '/app/Models/Checklist.php',
     'App\\Models\\Escuelas' => $baseDir . '/app/Models/Escuelas.php',
     'App\\Models\\Estudiantes' => $baseDir . '/app/Models/Estudiantes.php',
